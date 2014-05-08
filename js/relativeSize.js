@@ -1,6 +1,16 @@
-var drawCount;
 
-var factor = 20;
+
+/*
+Jack Jamieson 2014
+Relative Size App / Banana for Scale
+Use a known item(banana) to tell how big or small another object is.
+*/
+
+//TODO: fix height too big
+//sometimes the width is too much.  not recursing correctly?
+
+var num = 0;
+var factor = 10;
 var distanceBetweenObjects = 4;
 
 var bHeight = 4;
@@ -23,32 +33,24 @@ $('#go').click(function() {
 //Actual functions
 function init(newHeight)
 {
-    drawCount = 0;
 
-    var bananaForScale = document.getElementById("banana");
-
+    var bananaForScale = new Image();
     
-    draw.drawImage(bananaForScale,drawCount,newHeight-bHeight*factor,bWidth*factor,bHeight*factor);
-   // draw.fillText("  Banana is 7\' x 4\'.", 0, newHeight-bHeight*factor);
-   // drawCount += bWidth*factor + distanceBetweenObjects;
+    bananaForScale.onload = function(){
+        draw.drawImage(bananaForScale,0,newHeight-bHeight*factor,bWidth*factor,bHeight*factor);
 
-
-    //var manForScale = document.getElementById("man");
-    //draw.drawImage(manForScale,drawCount,700-600,200,600);
+    };
     
-    //drawCount += 200 + 4;
+    bananaForScale.src = "img/ban.png";
+
 }
 
 function drawObject(newHeight)
 {
+    console.log(num);
     var image = $('#image').val();
     var height = $('#height').val();
     var width = $('#width').val();
-    
-   // draw.fillStyle = "#000";
-    
-    //draw.fillRect(drawCount,700-height*factor,width*factor,height*factor);
-    
     
     var userImage = new Image();
     userImage.onload = function(){
@@ -62,18 +64,18 @@ function drawObject(newHeight)
             draw.scale(.5, .5);
             init(canvasHeight*2);
             canvasWidth = canvasWidth * 2;
-           // canvasHeight = canvasHeight * 2;
+            
             drawObject(canvasHeight*2);
             
         }
-        if(height*factor >= canvasHeight)
+        else if(height*factor >= canvasHeight)
         {
             console.log("too long");
     
             area.width = area.width;
             draw.scale(.5, .5);
             init(canvasHeight*2);
-           // canvasHeight = canvasHeight * 2;
+
             
             drawObject(canvasHeight*2);
             canvasHeight = canvasHeight * 2;
@@ -82,11 +84,11 @@ function drawObject(newHeight)
     };
     userImage.src = image;
     
-    ///drawCount += width*factor + distanceBetweenObjects;
+
 
     
 
-
+    num++;
     
     
 
