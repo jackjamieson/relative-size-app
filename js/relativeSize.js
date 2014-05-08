@@ -1,79 +1,97 @@
 var drawCount;
-var drawings = [];
+
+var factor = 20;
+var distanceBetweenObjects = 4;
+
+var bHeight = 4;
+var bWidth = 7;
+
+var canvasHeight = 700;
+var canvasWidth = 900;
 
 var area = document.getElementById("canvasWindow");
 var draw = area.getContext("2d");
 
-var object = {width:7, height:2.5};
-drawings.push(object);
-object = {width:20, height:60};
-drawings.push(object);
+var checkedWidth = false;
+//jQuery text box & button push events
+$('#go').click(function() {
+    
+    drawObject(canvasHeight);
+    
+});
 
-function init()
+//Actual functions
+function init(newHeight)
 {
     drawCount = 0;
 
     var bananaForScale = document.getElementById("banana");
-    draw.drawImage(bananaForScale,drawCount,700-25,70,25);
-    
-    drawCount += 60 + 4;
 
-    var manForScale = document.getElementById("man");
-    draw.drawImage(manForScale,drawCount,700-600,200,600);
     
-    drawCount += 200 + 4;
+    draw.drawImage(bananaForScale,drawCount,newHeight-bHeight*factor,bWidth*factor,bHeight*factor);
+   // draw.fillText("  Banana is 7\' x 4\'.", 0, newHeight-bHeight*factor);
+   // drawCount += bWidth*factor + distanceBetweenObjects;
+
+
+    //var manForScale = document.getElementById("man");
+    //draw.drawImage(manForScale,drawCount,700-600,200,600);
+    
+    //drawCount += 200 + 4;
 }
 
-$('#go').click(function() {
-    
-    drawObject();
-    
-});
-
-$('#width').keypress(function(ev){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-	if(keycode == '13'){
-		drawObject();
-	}
-});
-
-$('#height').keypress(function(ev){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-	if(keycode == '13'){
-		drawObject();
-	}
-});
-
-
-function drawObject()
+function drawObject(newHeight)
 {
-    
+    var image = $('#image').val();
     var height = $('#height').val();
     var width = $('#width').val();
     
-    draw.fillStyle = "#000";
+   // draw.fillStyle = "#000";
     
-    draw.fillRect(drawCount,700-height*10,width*10,height*10);
+    //draw.fillRect(drawCount,700-height*factor,width*factor,height*factor);
+    
+    
+    var userImage = new Image();
+    userImage.onload = function(){
+      draw.drawImage(userImage,bWidth*factor+distanceBetweenObjects,newHeight-height*factor,width*factor,height*factor);
+      
+        if(width*factor >= canvasWidth)
+        {
+            console.log("too big");
+    
+            area.width = area.width;
+            draw.scale(.5, .5);
+            init(canvasHeight*2);
+            canvasWidth = canvasWidth * 2;
+           // canvasHeight = canvasHeight * 2;
+            drawObject(canvasHeight*2);
+            
+        }
+        if(height*factor >= canvasHeight)
+        {
+            console.log("too long");
+    
+            area.width = area.width;
+            draw.scale(.5, .5);
+            init(canvasHeight*2);
+           // canvasHeight = canvasHeight * 2;
+            
+            drawObject(canvasHeight*2);
+            canvasHeight = canvasHeight * 2;
+        }
+       
+    };
+    userImage.src = image;
+    
+    ///drawCount += width*factor + distanceBetweenObjects;
 
-    object = {width:width, height:height};
-    drawings.push(object);
     
-    drawCount += width*10 + 4;
-    
-    //console.log(draw.save());
-    if(drawCount >= 900)
-    {
-        drawCount = 0;
-        draw.clearRect(0, 0, area.width, area.height);
-        draw.translate(area.width / 2, area.height / 2);
-        draw.scale(area.width/2, area.height/2);
-        
-        //area.
-        for(var i = 0; i < drawings.length; i++)
-            draw.fillRect(drawCount,700-drawings[i].height*10,drawings[i].width*10,drawings[i].height*10);
 
-    }
-        
+
+    
+    
+
 }
 
-init();
+
+init(canvasHeight);
+
