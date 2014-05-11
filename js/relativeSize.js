@@ -6,34 +6,51 @@ Relative Size App / Banana for Scale
 Use a known item(banana) to tell how big or small another object is.
 */
 
-//TODO: fix height too big
-//sometimes the width is too much.  not recursing correctly?
+var factor = 20;//Scaling factor 20px = 1 inch
+var distanceBetweenObjects = 4;//Distance between the banana and the object.
 
-var num = 0;
-var factor = 10;
-var distanceBetweenObjects = 4;
-
+//Default height of the banana is 4 inches high by 7 inches wide.
 var bHeight = 4;
 var bWidth = 7;
 
+//Hard codes dimensions of canvas.
 var canvasHeight = 700;
 var canvasWidth = 900;
+
+//Scale the canvas by 1/2 every time the object is too big.
+var newScaleW = .5;
+var newScaleH = .5;
 
 var area = document.getElementById("canvasWindow");
 var draw = area.getContext("2d");
 
-var checkedWidth = false;
-//jQuery text box & button push events
+
+//jQuery button push events
 $('#go').click(function() {
+    
     
     drawObject(canvasHeight);
     
+    var inputDiv = document.getElementById('input');
+    var displaySetting = inputDiv.style.display;
+    inputDiv.style.display = 'none';
+    
+    var outputDiv = document.getElementById('output');
+    displaySetting = outputDiv.style.display;
+    outputDiv.style.display = 'inline';
+    
+    var statDiv = document.getElementById('percent');
+    $('#percentW').text(calcDifferenceW());
+    $('#percentH').text(calcDifferenceH());
+
+    
 });
 
-//Actual functions
+//Actual drawing functions
+//Draw the banana
 function init(newHeight)
 {
-
+    //area.width = area.width;
     var bananaForScale = new Image();
     
     bananaForScale.onload = function(){
@@ -45,9 +62,9 @@ function init(newHeight)
 
 }
 
+//Draw the object(recursive if the object is too big)
 function drawObject(newHeight)
 {
-    console.log(num);
     var image = $('#image').val();
     var height = $('#height').val();
     var width = $('#width').val();
@@ -56,43 +73,73 @@ function drawObject(newHeight)
     userImage.onload = function(){
       draw.drawImage(userImage,bWidth*factor+distanceBetweenObjects,newHeight-height*factor,width*factor,height*factor);
       
-        if(width*factor >= canvasWidth)
+        if(width*factor >= canvasWidth || height*factor >= canvasHeight)
         {
             console.log("too big");
     
             area.width = area.width;
-            draw.scale(.5, .5);
-            init(canvasHeight*2);
+            draw.scale(newScaleW, newScaleH);
+            
+            canvasHeight = canvasHeight * 2;
             canvasWidth = canvasWidth * 2;
             
-            drawObject(canvasHeight*2);
+            newScaleW = newScaleW/2;
+            newScaleH = newScaleH/2;
+            
+            if(width*factor < canvasWidth && height*factor < canvasHeight)
+                init(canvasHeight);
+            drawObject(canvasHeight);
             
         }
-        else if(height*factor >= canvasHeight)
-        {
-            console.log("too long");
-    
-            area.width = area.width;
-            draw.scale(.5, .5);
-            init(canvasHeight*2);
-
-            
-            drawObject(canvasHeight*2);
-            canvasHeight = canvasHeight * 2;
-        }
-       
     };
     userImage.src = image;
-    
-
-
-    
-
-    num++;
-    
-    
 
 }
+
+function calcDifferenceW()
+{
+   // var height = $('#height').val();
+    var width = $('#width').val();
+    var result;
+    
+    if(width >= bWidth)
+        result = (width/bWidth) * 100;
+    else
+    {
+        result = (width/bWidth);
+        result = (1 - result) * 100;
+    }
+    result = Math.round(result);
+    
+    if(width > bWidth)
+        return result + "% wider ";
+    else if(width < bWidth)
+        return result + "% smaller ";
+    else return " no larger "
+}
+
+function calcDifferenceH()
+{
+    var height = $('#height').val();
+    var result;
+    
+    if(height >= bHeight)
+        result = (height/bHeight) * 100;
+    else
+    {
+        result = (height/bHeight);
+        result = (1 - result) * 100;
+    }
+
+    result = Math.round(result);
+    
+    if(height > bHeight)
+        return result + "% taller ";
+    else if(height < bHeight)
+        return result + "% smaller ";
+    else return " no larger "
+}
+
 
 
 init(canvasHeight);

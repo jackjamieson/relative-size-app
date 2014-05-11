@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="css/style.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
     <script src="js/jquery-1.11.1.min.js"></script>
     
 </head>
@@ -14,20 +15,37 @@
     <title>Relative Size App</title>
     
     <center>
+    
         <h1>Banana for Scale</h1>
+        <h4>Use the size of a known object to gauge the size of another!</h3>
         <canvas id="canvasWindow" width="900" height="700" style="border:1px solid #000000;">
         </canvas>
     
         <br>
+        
+        <div id='input'>
         <i>All measurements in inches!</i><br>
-        Image URL:
-        <input type='text' id='image' placeholder="jpeg, png, etc." value="http://ecx.images-amazon.com/images/I/81SR%2By8dLHL._SL1500_.jpg" size="65"><p></p>
-        Width:
-        <input type='number' id='width' value="60" step="5" min="0" autocomplete="off">
-        Height:
-        <input type='number' id='height' value="36" step="5" min="0" autocomplete="off">
+        
+            Image URL:
+            <input type='text' id='image' placeholder="jpeg, png, etc." value="http://ecx.images-amazon.com/images/I/81SR%2By8dLHL._SL1500_.jpg" size="65"><p></p>
+            Width:
+            <input type='number' id='width' value="60" step="5" min="0" autocomplete="off">
+            Height:
+            <input type='number' id='height' value="36" step="5" min="0" autocomplete="off">
 
-        <a href="#" class="btn btn-primary" id="go">Add Object</a>
+            <a href="#" class="btn btn-primary" id="go">Add Object</a>
+            
+        </div>
+
+        <br>
+        <div id='output'>
+        
+            Your object is <div id='percentW'></div> than a standard banana's width.
+            <br>
+            Your object is <div id='percentH'></div> than a standard banana's height.
+        
+        </div>
+        
     </center>
 
     <img id="banana" src="img/ban.png" hidden="true">

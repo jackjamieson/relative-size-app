@@ -1,0 +1,15 @@
+#output
+{
+    display: none;
+}
+
+#percentW, #percentH
+{
+    display:inline;
+    font-weight:bold;
+}
+
+h4
+{
+    font-style:italic;
+}
