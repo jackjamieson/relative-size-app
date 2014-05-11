@@ -21,6 +21,11 @@ var canvasWidth = 900;
 var newScaleW = .5;
 var newScaleH = .5;
 
+//Lets users share their comparisons.
+var URL;
+var urlWidth;
+var urlHeight;
+
 var area = document.getElementById("canvasWindow");
 var draw = area.getContext("2d");
 
@@ -42,7 +47,7 @@ $('#go').click(function() {
     var statDiv = document.getElementById('percent');
     $('#percentW').text(calcDifferenceW());
     $('#percentH').text(calcDifferenceH());
-
+    $('#shareURL').html("<a href=\"" + generateParams() + "\">" + generateParams() + "</a>");
     
 });
 
@@ -67,6 +72,9 @@ function drawObject(newHeight)
     var image = $('#image').val();
     var height = $('#height').val();
     var width = $('#width').val();
+    URL = image;
+    urlWidth = width;
+    urlHeight = height;
     
     var userImage = new Image();
     userImage.onload = function(){
@@ -140,6 +148,52 @@ function calcDifferenceH()
     else return " no larger "
 }
 
-//Draw the banana on the canvas to start.
-init(canvasHeight);
+//Will get the room parameter if there is one.
+function getRoomParam() {
+    if (window.location.href.indexOf('url=') === -1) {
+        return false;
+    } else {
+
+        var thisURL = window.location.href;
+        
+        URL = thisURL.substring(thisURL.indexOf('url=') + 4);
+        urlWidth = thisURL.substring(thisURL.indexOf('w=') + 2);
+        urlHeight = thisURL.substring(thisURL.indexOf('h=') + 2);
+
+        return true;
+
+    }
+}
+
+function generateParams()
+{
+    var thisURL = window.location.href;
+    
+    return thisURL + "?url=" + URL + "?w=" + urlWidth + "?h=" + urlHeight;
+
+}
+
+//Draw the banana on the canvas to start if there are no params.  If params, use them.
+if(getRoomParam() === true)
+{
+    drawObject(canvasHeight);
+    
+    var inputDiv = document.getElementById('input');
+    var displaySetting = inputDiv.style.display;
+    inputDiv.style.display = 'none';
+    
+    var outputDiv = document.getElementById('output');
+    displaySetting = outputDiv.style.display;
+    outputDiv.style.display = 'inline';
+    
+    var statDiv = document.getElementById('percent');
+    $('#percentW').text(calcDifferenceW());
+    $('#percentH').text(calcDifferenceH());
+    $('#shareURL').html("<a href=\"" + window.location.href + "\">" + window.location.href + "</a>");
+}
+else
+{
+    init(canvasHeight);
+}
+
 

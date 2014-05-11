@@ -9,6 +9,11 @@
     font-weight:bold;
 }
 
+#shareURL
+{
+    display:inline;
+}
+
 h4
 {
     font-style:italic;
