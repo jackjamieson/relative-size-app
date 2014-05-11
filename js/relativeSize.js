@@ -50,7 +50,6 @@ $('#go').click(function() {
 //Draw the banana
 function init(newHeight)
 {
-    //area.width = area.width;
     var bananaForScale = new Image();
     
     bananaForScale.onload = function(){
@@ -96,9 +95,9 @@ function drawObject(newHeight)
 
 }
 
+//Calculat the width difference.
 function calcDifferenceW()
 {
-   // var height = $('#height').val();
     var width = $('#width').val();
     var result;
     
@@ -118,6 +117,7 @@ function calcDifferenceW()
     else return " no larger "
 }
 
+//Calculate the height difference.
 function calcDifferenceH()
 {
     var height = $('#height').val();
@@ -140,7 +140,6 @@ function calcDifferenceH()
     else return " no larger "
 }
 
-
-
+//Draw the banana on the canvas to start.
 init(canvasHeight);
 
